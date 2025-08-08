@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nyalakan Lampu IoT</title>
+  <title>Portfolio Fandy S</title>
   <style>
     /* --- Reset & base --- */
     * {
@@ -323,7 +323,7 @@
 
   <!-- Header with tabs -->
   <header>
-    <h1>Nyalakan Lampu IoT</h1>
+    <h1>Portfolio Fandy S</h1>
     <nav class="tabs" id="tabs">
       <button class="active" data-tab="home">Home</button>
       <button data-tab="portfolio">Portfolio</button>
@@ -350,7 +350,7 @@
   <main id="main-content">
 
     <!-- Home tab content -->
-    <section id="tab-home" class="content visible">
+    <section id="tab-home" class="content">
       <div class="profile">
         <img src="foto-profile.jpeg" alt="Fandy Sondok" />
         <h2>Fandy Sondok</h2>
@@ -425,7 +425,6 @@
     // Lampu + saklar
     const lamp = document.getElementById('lamp');
     const switchBtn = document.getElementById('switch');
-    const content = document.getElementById('content');
     const lightBg = document.getElementById('light-bg');
     const tabButtons = document.querySelectorAll('nav.tabs button');
     const tabContents = document.querySelectorAll('main section.content');
@@ -443,6 +442,15 @@
     function sendSignalToLamp(toggle, lamp, turnOn) {
       const toggleRect = toggle.getBoundingClientRect();
       const lampRect = lamp.getBoundingClientRect();
+
+      // Toggle content visibility
+      tabContents.forEach(section => {
+        if (turnOn) {
+          section.classList.add('visible');
+        } else {
+          section.classList.remove('visible');
+        }
+      });
 
       const start = {
         x: toggleRect.left + toggleRect.width / 2,
@@ -485,20 +493,10 @@
               if (turnOn) {
                 lamp.classList.add('on');
                 lightBg.classList.add('on');
-                content.classList.add('visible');
               } else {
                 lamp.classList.remove('on');
                 lightBg.classList.remove('on');
-                content.classList.remove('visible');
               }
-              // Toggle content visibility
-              tabContents.forEach(section => {
-                if (lampOn) {
-                  section.classList.add('visible');
-                } else {
-                  section.classList.remove('visible');
-                }
-              });
             }
           }, 16);
         }, i * 200);
@@ -596,9 +594,9 @@
         const activeSection = document.getElementById(tabId);
         if (activeSection) {
           activeSection.style.display = 'block';
-
+          // activeSection.classList.add('visible');
           // If lamp is off, make content faded out
-          if (!lampOn) {
+          if (!isOn) {
             activeSection.classList.remove('visible');
           } else {
             activeSection.classList.add('visible');
