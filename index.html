@@ -3,9 +3,14 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nyalakan Lampu IoT</title>
   <style>
+    /* --- Reset & base --- */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -15,21 +20,22 @@
       height: 100vh;
     }
 
-    /* Canvas background IoT */
+    /* --- Canvas background --- */
     canvas#bg {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -2;
     }
 
-    /* Gradient cahaya dari bohlam */
     .light-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
       z-index: -1;
       background: radial-gradient(circle at 95% 5%, rgba(72, 202, 228, 0) 0%, rgba(72, 202, 228, 0) 30%);
@@ -40,35 +46,173 @@
       background: radial-gradient(circle at 95% 5%, rgba(72, 202, 228, 0.4) 0%, rgba(72, 202, 228, 0.15) 40%, rgba(72, 202, 228, 0.05) 70%);
     }
 
-    /* Lamp container */
+    /* --- Layout --- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #1b263b;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 10;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #48cae4;
+    }
+
+    /* Tabs container */
+    nav.tabs {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    nav.tabs button {
+      background: transparent;
+      border: 2px solid #48cae4;
+      color: #48cae4;
+      padding: 6px 14px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    nav.tabs button.active,
+    nav.tabs button:hover {
+      background: #48cae4;
+      color: #0d1b2a;
+    }
+
+    /* --- Main scrollable content --- */
+    main {
+      position: fixed;
+      top: 60px;
+      /* under header */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      padding: 20px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Section styling */
+    section {
+      margin-bottom: 60px;
+    }
+
+    section h2 {
+      border-bottom: 2px solid #48cae4;
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #48cae4;
+    }
+
+    /* Profile Section */
+    .profile {
+      text-align: center;
+    }
+
+    .profile img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #48cae4;
+      margin-bottom: 10px;
+    }
+
+    .profile h3 {
+      margin: 0;
+      color: #48cae4;
+      font-weight: 500;
+    }
+
+    /* Portfolio grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .portfolio-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(72, 202, 228, 0.3);
+      transition: box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .portfolio-item:hover {
+      box-shadow: 0 0 12px rgba(72, 202, 228, 0.6);
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      object-fit: cover;
+      height: 160px;
+    }
+
+    /* Contact icons fixed bottom right */
+    .contact-icons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 20;
+    }
+
+    .contact-icons a svg {
+      width: 28px;
+      height: 28px;
+      transition: transform 0.2s;
+    }
+
+    .contact-icons a:hover svg {
+      transform: scale(1.2);
+    }
+
+    /* Lamp & switch fixed */
     .lamp {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 70px;
+      right: 30px;
+      /* leave space from contact icons */
       width: 60px;
       height: 60px;
-      z-index: 2;
+      z-index: 15;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
 
-    /* Icon default (mati) */
     .lightbulb-icon {
       stroke: #1b263b;
       transition: all 0.3s ease;
       filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
     }
 
-    /* Icon nyala */
     .lamp.on .lightbulb-icon {
       stroke: #48cae4;
       filter: drop-shadow(0 0 6px rgba(72, 202, 228, 0.8)) drop-shadow(0 0 12px rgba(72, 202, 228, 0.6));
       animation: bulbPulse 1.5s infinite;
     }
 
-    /* Pulse glow animation */
     @keyframes bulbPulse {
       0% {
         filter: drop-shadow(0 0 4px rgba(72, 202, 228, 0.8)) drop-shadow(0 0 10px rgba(72, 202, 228, 0.5));
@@ -115,7 +259,24 @@
       background: #48cae4;
     }
 
-    /* Animasi sinyal */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
+      }
+
+      50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 25px rgba(72, 202, 228, 0.9), 0 0 45px rgba(72, 202, 228, 0.6);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
+      }
+    }
+
+    /* Signal animation */
     .signal {
       position: absolute;
       width: 0;
@@ -142,51 +303,38 @@
       }
     }
 
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
-      }
-
-      50% {
-        transform: scale(1.08);
-        box-shadow: 0 0 25px rgba(72, 202, 228, 0.9), 0 0 45px rgba(72, 202, 228, 0.6);
-      }
-
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
-      }
+    /* Content visibility toggled by lamp */
+    main .content {
+      opacity: 0.05;
+      transition: opacity 1s ease;
     }
 
-    /* Konten awalnya gelap/redup */
-    .content {
-      position: relative;
-      text-align: center;
-      margin-top: 150px;
-      color: rgba(255, 255, 255, 0.01);
-      /* hampir ga kebaca */
-      transition: color 1s ease;
-      z-index: 1;
-    }
-
-    /* Saat lampu nyala, jadi terang */
-    .content.visible {
-      color: rgba(255, 255, 255, 1);
-      /* text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-        0 0 20px rgba(72, 202, 228, 0.8); */
+    main .content.visible {
+      opacity: 1;
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Background -->
   <canvas id="bg"></canvas>
   <div class="light-bg" id="light-bg"></div>
 
-  <!-- Ganti elemen lamp -->
-  <div class="lamp" id="lamp">
-    <!-- Icon Lightbulb dari Lucide -->
+  <!-- Header with tabs -->
+  <header>
+    <h1>Nyalakan Lampu IoT</h1>
+    <nav class="tabs" id="tabs">
+      <button class="active" data-tab="home">Home</button>
+      <button data-tab="portfolio">Portfolio</button>
+      <button data-tab="contact">Contact</button>
+      <!-- Add more tabs easily here -->
+    </nav>
+  </header>
+
+  <!-- Lamp and switch UI -->
+  <div class="lamp" id="lamp" title="Toggle Lamp">
+    <!-- Lightbulb SVG icon -->
     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#1b263b"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lightbulb-icon">
       <path d="M9 18h6" />
@@ -194,93 +342,80 @@
       <path d="M12 2a7 7 0 0 0-7 7c0 3.54 2.61 6.47 6 6.92V18h2v-2.08c3.39-.45 6-3.38 6-6.92a7 7 0 0 0-7-7z" />
     </svg>
   </div>
-  <div class="switch" id="switch">
-    <div class="knob"></div /* Lamp container */ .lamp { position: fixed; top: 20px; right: 20px; width: 60px; height:
-      60px; z-index: 2; display: flex; align-items: center; justify-content: center; cursor: pointer; } /* Icon default
-      (mati) */ .lightbulb-icon { stroke: #1b263b; transition: all 0.3s ease; filter: drop-shadow(0 0 2px
-      rgba(0,0,0,0.5)); } /* Icon nyala */ .lamp.on .lightbulb-icon { stroke: #48cae4; filter: drop-shadow(0 0 6px
-      rgba(72,202,228,0.8)) drop-shadow(0 0 12px rgba(72,202,228,0.6)); animation: bulbPulse 1.5s infinite; } /* Pulse
-      glow animation */ @keyframes bulbPulse { 0% { filter: drop-shadow(0 0 4px rgba(72,202,228,0.8)) drop-shadow(0 0
-      10px rgba(72,202,228,0.5)); } 50% { filter: drop-shadow(0 0 8px rgba(72,202,228,1)) drop-shadow(0 0 20px
-      rgba(72,202,228,0.8)); } 100% { filter: drop-shadow(0 0 4px rgba(72,202,228,0.8)) drop-shadow(0 0 10px
-      rgba(72,202,228,0.5)); } }>
+  <div class="switch" id="switch" title="Toggle Lamp">
+    <div class="knob"></div>
   </div>
 
-  <div class="content" id="content">
-    <!-- Hero Section -->
-    <div style="display: flex; align-items: center; flex-direction: column; gap: 20px;">
-      <img src="foto-profile.jpeg" alt="Profile"
-        style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #48cae4;">
-      <h1 style="margin: 0;">Fandy Sondok</h1>
-      <h3 style="margin: 0; color: #48cae4;">Embedded Software & IoT Engineer</h3>
-      <p style="max-width: 500px; text-align: center;">
-        Saya adalah seorang engineer yang fokus di pengembangan solusi IoT, embedded systems, dan integrasi
-        hardware-software.
-        Menggabungkan teknologi dengan kreativitas untuk menciptakan produk inovatif.
-      </p>
-    </div>
+  <!-- Main content area (scrollable) -->
+  <main id="main-content">
 
-    <!-- Portfolio Section -->
-    <h2 style="margin-top: 50px;">Portfolio</h2>
-    <div
-      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 900px; margin: auto; margin-top: 20px;">
-
-      <div
-        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(72,202,228,0.3);">
-        <img src="project1.jpg" alt="Project 1" style="width: 100%; border-radius: 8px;">
-        <h3 style="margin-top: 10px;">Smart Home Controller</h3>
-        <p>Sistem pengendalian rumah pintar berbasis ESP32 dan MQTT untuk automasi lampu, AC, dan keamanan.</p>
+    <!-- Home tab content -->
+    <section id="tab-home" class="content visible">
+      <div class="profile">
+        <img src="foto-profile.jpeg" alt="Fandy Sondok" />
+        <h2>Fandy Sondok</h2>
+        <h3>Embedded Software & IoT Engineer</h3>
+        <p>
+          Saya adalah seorang engineer yang fokus di pengembangan solusi IoT, embedded systems, dan integrasi
+          hardware-software.
+          Menggabungkan teknologi dengan kreativitas untuk menciptakan produk inovatif.
+        </p>
       </div>
+    </section>
 
-      <div
-        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(72,202,228,0.3);">
-        <img src="project2.jpg" alt="Project 2" style="width: 100%; border-radius: 8px;">
-        <h3 style="margin-top: 10px;">IoT Monitoring Dashboard</h3>
-        <p>Dashboard real-time untuk memantau suhu, kelembaban, dan konsumsi listrik melalui web dan mobile.</p>
+    <!-- Portfolio tab content -->
+    <section id="tab-portfolio" class="content" style="display:none;">
+      <h2>Portfolio</h2>
+      <div class="portfolio-grid">
+        <article class="portfolio-item">
+          <img src="project1.jpg" alt="Smart Home Controller" />
+          <h3>Smart Home Controller</h3>
+          <p>Sistem pengendalian rumah pintar berbasis ESP32 dan MQTT untuk automasi lampu, AC, dan keamanan.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="project2.jpg" alt="IoT Monitoring Dashboard" />
+          <h3>IoT Monitoring Dashboard</h3>
+          <p>Dashboard real-time untuk memantau suhu, kelembaban, dan konsumsi listrik melalui web dan mobile.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="project3.jpg" alt="Industrial Sensor Node" />
+          <h3>Industrial Sensor Node</h3>
+          <p>Perangkat sensor industri berbasis LoRa untuk monitoring mesin dan prediksi perawatan.</p>
+        </article>
       </div>
+    </section>
 
-      <div
-        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(72,202,228,0.3);">
-        <img src="project3.jpg" alt="Project 3" style="width: 100%; border-radius: 8px;">
-        <h3 style="margin-top: 10px;">Industrial Sensor Node</h3>
-        <p>Perangkat sensor industri berbasis LoRa untuk monitoring mesin dan prediksi perawatan.</p>
+    <!-- Contact tab content -->
+    <section id="tab-contact" class="content" style="display:none;">
+      <h2>Contact</h2>
+      <div class="contact-icons">
+        <a href="https://www.linkedin.com/in/username" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+          <!-- LinkedIn SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#0077b5" viewBox="0 0 24 24">
+            <path
+              d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.82-2.2 3.75-2.2 4 0 4.75 2.62 4.75 6v7.8h-4V14.5c0-1.38 0-3.15-1.92-3.15s-2.23 1.5-2.23 3.05V24h-4V8z" />
+          </svg>
+        </a>
+        <a href="https://github.com/username" target="_blank" title="GitHub" aria-label="GitHub">
+          <!-- GitHub SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#333" viewBox="0 0 24 24">
+            <path
+              d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.28 3.438 9.747 8.205 11.325.6.113.82-.262.82-.582 0-.287-.01-1.044-.016-2.05-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.334-1.757-1.334-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.304 3.492.997.107-.775.418-1.305.76-1.605-2.665-.304-5.466-1.333-5.466-5.932 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.047.137 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.805 5.625-5.475 5.922.43.37.814 1.102.814 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.217.7.825.58C20.565 22.243 24 17.783 24 12.5 24 5.87 18.63.5 12 .5z" />
+          </svg>
+        </a>
+        <a href="mailto:email@example.com" title="Email" aria-label="Email">
+          <!-- Email SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#d93025" viewBox="0 0 24 24">
+            <path d="M12 13.065L.015 6
+
+           <path d=" M12 13.065L.015 6.94V18a2 2 0 0 0 2 2h19.97a2 2 0 0 0 2-2V6.94L12 13.065zM12 11.06L23.985
+              5H.015L12 11.06z" />
+          </svg>
+        </a>
       </div>
+    </section>
 
-    </div>
-
-    <!-- Contact Icons -->
-    <div style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    gap: 15px;
-    z-index: 100;
-  ">
-      <!-- LinkedIn -->
-      <a href="https://www.linkedin.com/in/username" target="_blank" title="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#0077b5" viewBox="0 0 24 24">
-          <path
-            d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.82-2.2 3.75-2.2 4 0 4.75 2.62 4.75 6v7.8h-4V14.5c0-1.38 0-3.15-1.92-3.15s-2.23 1.5-2.23 3.05V24h-4V8z" />
-        </svg>
-      </a>
-
-      <!-- GitHub -->
-      <a href="https://github.com/username" target="_blank" title="GitHub">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#333" viewBox="0 0 24 24">
-          <path
-            d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.28 3.438 9.747 8.205 11.325.6.113.82-.262.82-.582 0-.287-.01-1.044-.016-2.05-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.334-1.757-1.334-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.304 3.492.997.107-.775.418-1.305.76-1.605-2.665-.304-5.466-1.333-5.466-5.932 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.047.137 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.805 5.625-5.475 5.922.43.37.814 1.102.814 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.217.7.825.58C20.565 22.243 24 17.783 24 12.5 24 5.87 18.63.5 12 .5z" />
-        </svg>
-      </a>
-
-      <!-- Email -->
-      <a href="mailto:email@example.com" title="Email">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#d93025" viewBox="0 0 24 24">
-          <path d="M12 13.065L.015 6h23.97L12 13.065zM0 8.151V18h24V8.151l-12 6.916-12-6.916z" />
-        </svg>
-      </a>
-    </div>
-  </div>
+  </main>
 
   <!-- Font Awesome untuk Icon -->
   <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
@@ -292,6 +427,8 @@
     const switchBtn = document.getElementById('switch');
     const content = document.getElementById('content');
     const lightBg = document.getElementById('light-bg');
+    const tabButtons = document.querySelectorAll('nav.tabs button');
+    const tabContents = document.querySelectorAll('main section.content');
 
     switchBtn.addEventListener('click', () => {
       const isOn = switchBtn.classList.toggle('on');
@@ -354,6 +491,14 @@
                 lightBg.classList.remove('on');
                 content.classList.remove('visible');
               }
+              // Toggle content visibility
+              tabContents.forEach(section => {
+                if (lampOn) {
+                  section.classList.add('visible');
+                } else {
+                  section.classList.remove('visible');
+                }
+              });
             }
           }, 16);
         }, i * 200);
@@ -436,6 +581,31 @@
     }
 
     animate();
+
+    // Tab navigation logic
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active from all buttons
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        // Hide all tab content
+        tabContents.forEach(content => (content.style.display = 'none'));
+
+        // Activate clicked tab
+        button.classList.add('active');
+        const tabId = 'tab-' + button.dataset.tab;
+        const activeSection = document.getElementById(tabId);
+        if (activeSection) {
+          activeSection.style.display = 'block';
+
+          // If lamp is off, make content faded out
+          if (!lampOn) {
+            activeSection.classList.remove('visible');
+          } else {
+            activeSection.classList.add('visible');
+          }
+        }
+      });
+    });
   </script>
 
 </body>
