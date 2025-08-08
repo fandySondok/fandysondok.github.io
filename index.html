@@ -162,28 +162,29 @@
       width: 100%;
       border-radius: 8px;
       margin-bottom: 10px;
-      object-fit: cover;
+      object-fit: contain;
       height: 160px;
     }
 
     /* Contact icons fixed bottom right */
     .contact-icons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
+      position:fixed;
+      align-items: center;
+      /* bottom: 20px;
+      right: 20px; */
       display: flex;
       gap: 15px;
-      z-index: 20;
+      /* z-index: 20; */
     }
 
     .contact-icons a svg {
-      width: 28px;
-      height: 28px;
+      width: 50px;
+      height: 50px;
       transition: transform 0.2s;
     }
 
     .contact-icons a:hover svg {
-      transform: scale(1.2);
+      transform: scale(1.5);
     }
 
     /* Lamp & switch fixed */
@@ -312,6 +313,22 @@
     main .content.visible {
       opacity: 1;
     }
+
+    /* Besarkan font paragraf */
+    #tab-home p {
+      font-size: 1.1rem;
+      /* bisa disesuaikan */
+      line-height: 1.6;
+      margin-top: 1em;
+      /* spasi di atas paragraf */
+    }
+
+    /* Beri jarak antara About Me dan h3 sebelumnya */
+    #tab-home h3 {
+      margin-top: 2em;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
   </style>
 </head>
 
@@ -352,13 +369,18 @@
     <!-- Home tab content -->
     <section id="tab-home" class="content">
       <div class="profile">
-        <img src="foto-profile.jpeg" alt="Fandy Sondok" />
+        <img src="img/foto-profile.jpeg" alt="Profile Pic" />
         <h2>Fandy Sondok</h2>
         <h3>Embedded Software & IoT Engineer</h3>
+        <h3>About Me</h3>
         <p>
-          Saya adalah seorang engineer yang fokus di pengembangan solusi IoT, embedded systems, dan integrasi
-          hardware-software.
-          Menggabungkan teknologi dengan kreativitas untuk menciptakan produk inovatif.
+          I am a passionate Embedded and IoT Engineer with a deep enthusiasm for solving complex problems and designing
+          innovative systems. My love for this field drives me to create comprehensive IoT and embedded solutions from
+          start to finish — from schematic design and PCB layout, through coding and developing user-friendly GUI
+          interfaces, to data transmission, backend development, and creating insightful dashboards.
+
+          With extensive experience in every stage of the IoT system lifecycle, I enjoy turning ideas into functional,
+          efficient, and scalable products that truly make an impact.
         </p>
       </div>
     </section>
@@ -368,19 +390,72 @@
       <h2>Portfolio</h2>
       <div class="portfolio-grid">
         <article class="portfolio-item">
-          <img src="project1.jpg" alt="pic1" />
-          <h3>project1</h3>
-          <p>blablabla</p>
+          <img src="img/fc.png" alt="pic1" />
+          <h3>Fast Chargng Station [2025]</h3>
+          <p>Designed hardware and PCB, developed firmware with FUOTA capability, server backend, database,
+            dashboard, and Linux GUI display for fast charging stations.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/light.jpeg" alt="pic3" />
+          <h3>Light Intensity Monitoring [2025]</h3>
+          <p>Developed IoT weather station focused on measuring and monitoring light intensity in Blora.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/windspeed.jpeg" alt="pic3" />
+          <h3>Wind Speed Monitoring [2025]</h3>
+          <p>Implemented wind speed measurement and data acquisition for Blora weather station.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/temp-current.jpeg" alt="pic3" />
+          <h3>Temperature and PV Current Monitoring [2025]</h3>
+          <p>Designed system to monitor temperature and photovoltaic (PV) current parameters in Blora.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/amer.jpeg" alt="pic3" />
+          <h3>Automatic Meter Reading Device [2025]</h3>
+          <p>Created software solution for automatic meter reading to improve data collection accuracy and efficiency.
+          </p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/ups.jpeg" alt="pic2" />
+          <h3>UPS Monitoring System [2024]</h3>
+          <p>Complete solution including hardware design, firmware development, backend, dashboard, and database
+            management for UPS monitoring.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/lidar.jpeg" alt="pic2" />
+          <h3>Vehicle Dimension Measurement System Using LiDAR Sensors [2023]</h3>
+          <p>Created a Linux library in C to implement vehicle dimension measurement on toll roads using LiDAR sensor
+            technology.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/pos.jpeg" alt="pic2" />
+          <h3>GUI Parking Payment Station System (Point of Sale) [2022]</h3>
+          <p>Developed a GUI for parking exit systems allowing multi-category lane access control.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/park.jpeg" alt="pic2" />
+          <h3>Manless Parking System – Frontend Hardware [2022]</h3>
+          <p>Built a manless parking system integrating barrier control, AI-based license plate recognition, e-money
+            payment, and real-time data transmission to the database server.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/ch.jpeg" alt="pic2" />
+          <h3>IoT-Based Chicken Coop Monitoring Prototype (6 Parameters)[2022]</h3>
+          <p> Developed a prototype IoT monitoring system for chicken coops to optimize and increase efficiency in
+            poultry farming.</p>
+        </article>
+        <article class="portfolio-item">
+          <img src="img/lora.jpeg" alt="pic2" />
+          <h3>LoRaWAN Class C Sanitation System Monitoring and Control [2021]</h3>
+          <p>Designed and developed a sanitation system for pump control in a Cikarang factory, based on LoRaWAN Class C
+            technology.</p>
         </article>
         <article class="portfolio-item">
           <img src="project2.jpg" alt="pic2" />
-          <h3>project2</h3>
-          <p>blablabla</p>
-        </article>
-        <article class="portfolio-item">
-          <img src="project3.jpg" alt="pic3" />
-          <h3>project3</h3>
-          <p>blablabla</p>
+          <h3>Palm Oil Transport Truck Product Tracking System [2021]</h3>
+          <p>Developed a tracking system for palm oil transport trucks in rural areas to optimize logistics processes.
+          </p>
         </article>
       </div>
     </section>
