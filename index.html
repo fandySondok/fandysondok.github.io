@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyalakan Lampu IoT</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1b2a;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Canvas background IoT */
+    canvas#bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -2;
+    }
+
+    /* Gradient cahaya dari bohlam */
+    .light-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 95% 5%, rgba(72, 202, 228, 0) 0%, rgba(72, 202, 228, 0) 30%);
+      transition: background 1s ease;
+    }
+
+    .light-bg.on {
+      background: radial-gradient(circle at 95% 5%, rgba(72, 202, 228, 0.4) 0%, rgba(72, 202, 228, 0.15) 40%, rgba(72, 202, 228, 0.05) 70%);
+    }
+
+    /* Lamp container */
+    .lamp {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Icon default (mati) */
+    .lightbulb-icon {
+      stroke: #1b263b;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Icon nyala */
+    .lamp.on .lightbulb-icon {
+      stroke: #48cae4;
+      filter: drop-shadow(0 0 6px rgba(72, 202, 228, 0.8)) drop-shadow(0 0 12px rgba(72, 202, 228, 0.6));
+      animation: bulbPulse 1.5s infinite;
+    }
+
+    /* Pulse glow animation */
+    @keyframes bulbPulse {
+      0% {
+        filter: drop-shadow(0 0 4px rgba(72, 202, 228, 0.8)) drop-shadow(0 0 10px rgba(72, 202, 228, 0.5));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 8px rgba(72, 202, 228, 1)) drop-shadow(0 0 20px rgba(72, 202, 228, 0.8));
+      }
+
+      100% {
+        filter: drop-shadow(0 0 4px rgba(72, 202, 228, 0.8)) drop-shadow(0 0 10px rgba(72, 202, 228, 0.5));
+      }
+    }
+
+    /* Saklar */
+    .switch {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 40px;
+      background: #1b263b;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      animation: pulse 1.5s infinite;
+    }
+
+    .knob {
+      width: 36px;
+      height: 36px;
+      background: #ddd;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .switch.on .knob {
+      left: 42px;
+      background: #48cae4;
+    }
+
+    /* Animasi sinyal */
+    .signal {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 3px solid rgba(72, 202, 228, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: wave 1s ease-out forwards;
+    }
+
+    @keyframes wave {
+      from {
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+
+      to {
+        width: 200px;
+        height: 200px;
+        margin-left: -100px;
+        margin-top: -100px;
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
+      }
+
+      50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 25px rgba(72, 202, 228, 0.9), 0 0 45px rgba(72, 202, 228, 0.6);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(72, 202, 228, 0.6), 0 0 30px rgba(72, 202, 228, 0.4);
+      }
+    }
+
+    /* Konten */
+    .content {
+      position: relative;
+      text-align: center;
+      margin-top: 150px;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 1;
+    }
+
+    .content.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bg"></canvas>
+  <div class="light-bg" id="light-bg"></div>
+
+  <!-- Ganti elemen lamp -->
+  <div class="lamp" id="lamp">
+    <!-- Icon Lightbulb dari Lucide -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#1b263b"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lightbulb-icon">
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M12 2a7 7 0 0 0-7 7c0 3.54 2.61 6.47 6 6.92V18h2v-2.08c3.39-.45 6-3.38 6-6.92a7 7 0 0 0-7-7z" />
+    </svg>
+  </div>
+  <div class="switch" id="switch">
+    <div class="knob"></div /* Lamp container */ .lamp { position: fixed; top: 20px; right: 20px; width: 60px; height:
+      60px; z-index: 2; display: flex; align-items: center; justify-content: center; cursor: pointer; } /* Icon default
+      (mati) */ .lightbulb-icon { stroke: #1b263b; transition: all 0.3s ease; filter: drop-shadow(0 0 2px
+      rgba(0,0,0,0.5)); } /* Icon nyala */ .lamp.on .lightbulb-icon { stroke: #48cae4; filter: drop-shadow(0 0 6px
+      rgba(72,202,228,0.8)) drop-shadow(0 0 12px rgba(72,202,228,0.6)); animation: bulbPulse 1.5s infinite; } /* Pulse
+      glow animation */ @keyframes bulbPulse { 0% { filter: drop-shadow(0 0 4px rgba(72,202,228,0.8)) drop-shadow(0 0
+      10px rgba(72,202,228,0.5)); } 50% { filter: drop-shadow(0 0 8px rgba(72,202,228,1)) drop-shadow(0 0 20px
+      rgba(72,202,228,0.8)); } 100% { filter: drop-shadow(0 0 4px rgba(72,202,228,0.8)) drop-shadow(0 0 10px
+      rgba(72,202,228,0.5)); } }>
+  </div>
+
+  <div class="content" id="content">
+    <h1>Selamat Datang di Website Saya</h1>
+    <p>Ini adalah resume interaktif saya sebagai Embedded Software & IoT Engineer.</p>
+  </div>
+
+  <script>
+    // Lampu + saklar
+    const lamp = document.getElementById('lamp');
+    const switchBtn = document.getElementById('switch');
+    const content = document.getElementById('content');
+    const lightBg = document.getElementById('light-bg');
+
+    switchBtn.addEventListener('click', () => {
+      const isOn = switchBtn.classList.toggle('on');
+      if (isOn) {
+        sendSignalToLamp(switchBtn, lamp);
+      } else {
+        lamp.classList.remove('on');
+        lightBg.classList.remove('on');
+        content.classList.remove('visible');
+      }
+    });
+
+    function sendSignal(element) {
+      const rect = element.getBoundingClientRect();
+      const signal = document.createElement('div');
+      signal.className = 'signal';
+      signal.style.left = rect.left + rect.width / 2 + 'px';
+      signal.style.top = rect.top + rect.height / 2 + 'px';
+      document.body.appendChild(signal);
+      setTimeout(() => {
+        signal.remove();
+      }, 1000);
+    }
+
+    function sendSignal(element) {
+      const rect = element.getBoundingClientRect();
+
+      for (let i = 0; i < 3; i++) { // bikin 3 wave
+        setTimeout(() => {
+          const signal = document.createElement('div');
+          signal.className = 'signal';
+          signal.style.left = rect.left + rect.width / 2 + 'px';
+          signal.style.top = rect.top + rect.height / 2 + 'px';
+          document.body.appendChild(signal);
+
+          setTimeout(() => {
+            signal.remove();
+          }, 1000);
+        }, i * 200); // delay antar wave 200ms
+      }
+    }
+
+    function sendSignalToLamp(toggle, lamp) {
+      const toggleRect = toggle.getBoundingClientRect();
+      const lampRect = lamp.getBoundingClientRect();
+
+      const start = {
+        x: toggleRect.left + toggleRect.width / 2,
+        y: toggleRect.top + toggleRect.height / 2
+      };
+
+      const end = {
+        x: lampRect.left + lampRect.width / 2,
+        y: lampRect.top + lampRect.height / 2
+      };
+
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const signal = document.createElement('div');
+          signal.className = 'signal';
+          signal.style.left = start.x + 'px';
+          signal.style.top = start.y + 'px';
+          document.body.appendChild(signal);
+
+          let progress = 0;
+          const grow = setInterval(() => {
+            progress += 0.02; // kecepatan
+            const currentX = start.x + (end.x - start.x) * progress;
+            const currentY = start.y + (end.y - start.y) * progress;
+
+            const radius = progress * 200; // ukuran membesar
+            signal.style.left = currentX + 'px';
+            signal.style.top = currentY + 'px';
+            signal.style.width = radius * 2 + 'px';
+            signal.style.height = radius * 2 + 'px';
+            signal.style.marginLeft = -radius + 'px';
+            signal.style.marginTop = -radius + 'px';
+            signal.style.opacity = 1 - progress;
+
+            if (progress >= 1) {
+              clearInterval(grow);
+              signal.remove();
+
+              // nyalain lampu kalau wave sampai tujuan
+              if (!lamp.classList.contains('on')) {
+                lamp.classList.add('on');
+                lightBg.classList.add('on');
+                content.classList.add('visible');
+              }
+            }
+          }, 16);
+        }, i * 200);
+      }
+    }
+
+
+
+
+    // IoT network background
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createNodes() {
+      nodes = [];
+      for (let i = 0; i < 50; i++) {
+        nodes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5
+        });
+      }
+    }
+    createNodes();
+
+    function drawNodes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#48cae4';
+      nodes.forEach(node => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.strokeStyle = 'rgba(72, 202, 228, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function updateNodes() {
+      nodes.forEach(node => {
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      });
+    }
+
+    function animate() {
+      updateNodes();
+      drawNodes();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+</body>
+
+</html>
