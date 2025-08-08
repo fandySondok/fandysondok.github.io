@@ -217,45 +217,14 @@
     switchBtn.addEventListener('click', () => {
       const isOn = switchBtn.classList.toggle('on');
       if (isOn) {
-        sendSignalToLamp(switchBtn, lamp);
+        sendSignalToLamp(switchBtn, lamp, true); // true = mode nyalain
       } else {
-        lamp.classList.remove('on');
-        lightBg.classList.remove('on');
-        content.classList.remove('visible');
+        sendSignalToLamp(switchBtn, lamp, false); // false = mode matiin
       }
     });
 
-    function sendSignal(element) {
-      const rect = element.getBoundingClientRect();
-      const signal = document.createElement('div');
-      signal.className = 'signal';
-      signal.style.left = rect.left + rect.width / 2 + 'px';
-      signal.style.top = rect.top + rect.height / 2 + 'px';
-      document.body.appendChild(signal);
-      setTimeout(() => {
-        signal.remove();
-      }, 1000);
-    }
-
-    function sendSignal(element) {
-      const rect = element.getBoundingClientRect();
-
-      for (let i = 0; i < 3; i++) { // bikin 3 wave
-        setTimeout(() => {
-          const signal = document.createElement('div');
-          signal.className = 'signal';
-          signal.style.left = rect.left + rect.width / 2 + 'px';
-          signal.style.top = rect.top + rect.height / 2 + 'px';
-          document.body.appendChild(signal);
-
-          setTimeout(() => {
-            signal.remove();
-          }, 1000);
-        }, i * 200); // delay antar wave 200ms
-      }
-    }
-
-    function sendSignalToLamp(toggle, lamp) {
+    // send signal
+    function sendSignalToLamp(toggle, lamp, turnOn) {
       const toggleRect = toggle.getBoundingClientRect();
       const lampRect = lamp.getBoundingClientRect();
 
@@ -279,11 +248,11 @@
 
           let progress = 0;
           const grow = setInterval(() => {
-            progress += 0.02; // kecepatan
+            progress += 0.02;
             const currentX = start.x + (end.x - start.x) * progress;
             const currentY = start.y + (end.y - start.y) * progress;
 
-            const radius = progress * 200; // ukuran membesar
+            const radius = progress * 200;
             signal.style.left = currentX + 'px';
             signal.style.top = currentY + 'px';
             signal.style.width = radius * 2 + 'px';
@@ -296,11 +265,15 @@
               clearInterval(grow);
               signal.remove();
 
-              // nyalain lampu kalau wave sampai tujuan
-              if (!lamp.classList.contains('on')) {
+              // kalau sampai tujuan
+              if (turnOn) {
                 lamp.classList.add('on');
                 lightBg.classList.add('on');
                 content.classList.add('visible');
+              } else {
+                lamp.classList.remove('on');
+                lightBg.classList.remove('on');
+                content.classList.remove('visible');
               }
             }
           }, 16);
@@ -308,7 +281,14 @@
       }
     }
 
-
+    // Contoh event "reach bsignal"
+    function onReachBSignal() {
+      if (!switchBtn.classList.contains('on')) {
+        lamp.classList.remove('on');
+        lightBg.classList.remove('on');
+        content.classList.remove('visible');
+      }
+    }
 
 
     // IoT network background
