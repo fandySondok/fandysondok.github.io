@@ -320,7 +320,139 @@
       line-height: 1.8;
     }
 
-    /* --- NEW: PORTFOLIO BUSINESS LAYOUT --- */
+    /* --- EXPERIENCE SECTION STYLES --- */
+    .experience-section {
+      max-width: 800px;
+      margin: 60px auto 0;
+      text-align: left;
+    }
+
+    .experience-section h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .experience-section h3::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .company-block {
+      margin-bottom: 32px;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.3s ease;
+    }
+
+    .company-block:hover {
+      border-color: var(--border-strong);
+    }
+
+    .company-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .company-info h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .company-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .company-duration-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .role-entry {
+      position: relative;
+      padding-left: 20px;
+      margin-top: 20px;
+      border-left: 2px solid var(--border);
+    }
+
+    .role-entry::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .role-title {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .role-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 8px;
+    }
+
+    .role-description {
+      margin-top: 12px;
+      list-style: none;
+    }
+
+    .role-description li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .role-description li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .role-tags {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* --- PORTFOLIO BUSINESS LAYOUT --- */
     .section-header {
       margin-bottom: 40px;
     }
@@ -351,14 +483,12 @@
     .project-item {
       display: grid;
       grid-template-columns: 100px 1fr;
-      /* Year column + Content column */
       gap: 32px;
       padding: 32px 0;
       border-bottom: 1px solid var(--border);
       transition: background 0.3s ease;
     }
 
-    /* Hover effect for the row */
     .project-item:hover {
       background: rgba(0, 212, 170, 0.03);
       padding-left: 16px;
@@ -648,7 +778,6 @@
         gap: 8px;
       }
 
-      /* Stack projects on mobile */
       .project-year {
         margin-bottom: 8px;
       }
@@ -668,6 +797,11 @@
 
       .standby-prompt {
         width: 90%;
+      }
+
+      /* Experience Mobile adjustments */
+      .company-header {
+        flex-direction: column;
       }
     }
   </style>
@@ -739,6 +873,9 @@
             efficient, and scalable products that truly make an impact.
           </p>
         </div>
+
+        <!-- NEW: Experience Section Container -->
+        <div id="experience-container" class="experience-section"></div>
       </div>
     </section>
 
@@ -747,7 +884,6 @@
       <div class="section-header">
         <h2>Portfolio</h2>
       </div>
-      <!-- This will now render the business list -->
       <div class="project-list" id="portfolio-list"></div>
     </section>
 
@@ -763,7 +899,82 @@
   <script>
     // --- DATA ---
 
-    // Portfolio Data - Business Focused
+    // Experience Data (Parsed from request)
+    const experienceData = [
+      {
+        company: "MAKA Motors",
+        type: "Full-time",
+        location: "Jakarta, Indonesia · On-site",
+        totalDuration: "Mar 2024 - Present",
+        roles: [
+          {
+            title: "Firmware Engineer",
+            date: "Mar 2024 - Present",
+            description: [
+              "Conducting research and development for Engine Control Unit (ECU) systems.",
+              "Developing low-level firmware for motor control and vehicle embedded systems."
+            ],
+            skills: ["Embedded Systems", "Riset", "ECU"]
+          }
+        ]
+      },
+      {
+        company: "PT Delameta Bilano",
+        type: "Full-time",
+        location: "Jakarta, Indonesia · On-site",
+        totalDuration: "Sep 2021 - Mar 2024 · 2 yrs 7 mos",
+        roles: [
+          {
+            title: "Embedded Software Engineer",
+            date: "Apr 2022 - Mar 2024 · 2 yrs",
+            description: [
+              "Electronic Money Card Payment REST API: Developed a REST API for electronic money card systems, enabling features such as card deduction, balance checks, and card number verification.",
+              "LiDAR Data Acquisition Library: Created a dynamic C library on Linux for LiDAR data acquisition via UDP, mapping the measurements using GTK, and determining object dimensions.",
+              "E-Ticketing Gate Control Library: Developed a dynamic C library on Linux for controlling e-ticketing gates, managing LEDs, displays, gate operations, and reading electronic money cards.",
+              "EV Charging Station GUI Integration Library: Built a dynamic C library on Linux to control the GUI for integrating electronic money card payment systems with EV charging stations via REST API and OCPP."
+            ],
+            skills: ["C (Programming Language)", "GTK+", "REST API", "Linux"]
+          },
+          {
+            title: "Application Developer",
+            date: "Sep 2021 - Mar 2024 · 2 yrs 7 mos",
+            description: [
+              "Manless Parking System: Developed an automated parking system that enables a dispenser to collect parking fees. The system controls barriers, loop coils, and cameras integrated with AI for license plate recognition, and supports e-money card transactions.",
+              "Semi-Automatic Parking System (Point of Sales): Created a point-of-sale solution for semi-automatic parking systems, utilizing monitors to track driver and vehicle characteristics for verification and payment processing."
+            ],
+            skills: ["Embedded Software", "PostgreSQL", "Computer Vision", "System Integration"]
+          }
+        ]
+      },
+      {
+        company: "PT Merapi Tani Instrument",
+        type: "Full-time",
+        location: "Yogyakarta, Indonesia · On-site",
+        totalDuration: "Jan 2020 - Aug 2021 · 1 yr 8 mos",
+        roles: [
+          {
+            title: "Firmware Developer",
+            date: "Jan 2020 - Aug 2021 · 1 yr 8 mos",
+            description: [
+              "Automatic Weather Stations: Developed self-powered weather stations that provide reliable weather data in remote areas.",
+              "Water Level Monitoring: Designed systems that automatically monitor water levels, providing real-time data for flood mitigation."
+            ],
+            skills: ["Embedded Systems", "C (Programming Language)", "Sensor Integration"]
+          },
+          {
+            title: "IoT Engineer",
+            date: "Jan 2020 - Aug 2021 · 1 yr 8 mos",
+            description: [
+              "Truck Tracking: Created systems to track trucks in palm oil plantations, helping to improve logistics and efficiency.",
+              "LoRa Networks: Set up and maintained networks with multiple nodes using LoRaWAN for long-range communication."
+            ],
+            skills: ["Embedded Systems", "ESP32 Microcontrollers", "LoRaWAN", "GPS"]
+          }
+        ]
+      }
+    ];
+
+    // Portfolio Data
     const portfolioData = [
       {
         year: '2025',
@@ -860,11 +1071,47 @@
 
     // --- RENDER FUNCTIONS ---
 
+    function renderExperience() {
+      const container = document.getElementById('experience-container');
+      if (!container) return;
+
+      let html = '<h3>Experience</h3>';
+
+      experienceData.forEach(company => {
+        html += `
+          <div class="company-block stagger-item">
+            <div class="company-header">
+              <div class="company-info">
+                <h4>${company.company}</h4>
+                <div class="company-meta">${company.location}</div>
+              </div>
+              <div class="company-duration-badge">${company.totalDuration}</div>
+            </div>
+            ${company.roles.map(role => `
+              <div class="role-entry">
+                <div>
+                  <span class="role-title">${role.title}</span>
+                  <span class="role-date">${role.date}</span>
+                </div>
+                <ul class="role-description">
+                  ${role.description.map(desc => `<li>${desc}</li>`).join('')}
+                </ul>
+                <div class="role-tags tags">
+                  ${role.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
     function renderPortfolio() {
       const list = document.getElementById('portfolio-list');
       if (!list) return;
 
-      // Generate List Items instead of Grid Cards
       list.innerHTML = portfolioData.map((item, index) => `
         <article class="project-item stagger-item" style="transition-delay: ${index * 0.08}s">
           <div class="project-year">${item.year}</div>
@@ -893,6 +1140,8 @@
       `).join('');
     }
 
+    // Initialize Render
+    renderExperience();
     renderPortfolio();
     renderContact();
 
