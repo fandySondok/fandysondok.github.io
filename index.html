@@ -7,7 +7,9 @@
   <title>Fandy Sondok | Embedded & IoT Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg-deep: #050a12;
@@ -28,7 +30,9 @@
       padding: 0;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Space Grotesk', sans-serif;
@@ -54,12 +58,14 @@
       pointer-events: none;
       opacity: 0;
       transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      background: 
+      background:
         radial-gradient(ellipse 80% 50% at 70% 10%, var(--accent-glow) 0%, transparent 50%),
         radial-gradient(ellipse 60% 40% at 90% 20%, rgba(0, 180, 220, 0.2) 0%, transparent 40%);
     }
 
-    .ambient-light.active { opacity: 1; }
+    .ambient-light.active {
+      opacity: 1;
+    }
 
     /* Grid Pattern Overlay */
     .grid-pattern {
@@ -68,7 +74,7 @@
       z-index: -1;
       pointer-events: none;
       opacity: 0.03;
-      background-image: 
+      background-image:
         linear-gradient(var(--accent) 1px, transparent 1px),
         linear-gradient(90deg, var(--accent) 1px, transparent 1px);
       background-size: 60px 60px;
@@ -100,10 +106,15 @@
       letter-spacing: -0.5px;
     }
 
-    .logo span { color: var(--text-muted); }
+    .logo span {
+      color: var(--text-muted);
+    }
 
     /* Navigation */
-    nav.tabs { display: flex; gap: 8px; }
+    nav.tabs {
+      display: flex;
+      gap: 8px;
+    }
 
     nav.tabs button {
       position: relative;
@@ -118,15 +129,6 @@
       cursor: pointer;
       transition: all 0.3s ease;
       overflow: hidden;
-    }
-
-    nav.tabs button::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--accent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
     }
 
     nav.tabs button:hover {
@@ -163,13 +165,16 @@
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .content-section.active { display: block; }
+    .content-section.active {
+      display: block;
+    }
+
     .content-section.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* --- NEW: STANDBY PROMPT --- */
+    /* Standby Prompt */
     .standby-prompt {
       position: fixed;
       top: 50%;
@@ -183,7 +188,9 @@
       color: var(--text-muted);
     }
 
-    .standby-prompt.hidden { opacity: 0; }
+    .standby-prompt.hidden {
+      opacity: 0;
+    }
 
     .prompt-icon {
       font-size: 3rem;
@@ -205,14 +212,24 @@
     }
 
     @keyframes gentlePulse {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(1.1); opacity: 0.8; }
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
     }
 
     @keyframes blink {
-      50% { opacity: 0; }
+      50% {
+        opacity: 0;
+      }
     }
-    /* --- END NEW --- */
 
     /* Profile Section */
     .profile-container {
@@ -238,7 +255,11 @@
       opacity: 0.6;
     }
 
-    @keyframes rotate { to { transform: rotate(360deg); } }
+    @keyframes rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     .profile-image {
       position: relative;
@@ -299,8 +320,10 @@
       line-height: 1.8;
     }
 
-    /* Portfolio Grid */
-    .section-header { margin-bottom: 40px; }
+    /* --- NEW: PORTFOLIO BUSINESS LAYOUT --- */
+    .section-header {
+      margin-bottom: 40px;
+    }
 
     .section-header h2 {
       font-size: clamp(1.75rem, 4vw, 2.25rem);
@@ -318,77 +341,71 @@
       background: linear-gradient(90deg, var(--border-strong), transparent);
     }
 
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
     }
 
-    .portfolio-card {
-      position: relative;
+    .project-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      /* Year column + Content column */
+      gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease;
+    }
+
+    /* Hover effect for the row */
+    .project-item:hover {
+      background: rgba(0, 212, 170, 0.03);
+      padding-left: 16px;
+      margin-left: -16px;
+      padding-right: 16px;
+      margin-right: -16px;
+      border-radius: 8px;
+    }
+
+    .project-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--accent);
+      padding-top: 4px;
+    }
+
+    .project-content h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      max-width: 700px;
+      line-height: 1.7;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 4px 10px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: default;
-    }
-
-    .portfolio-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .portfolio-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-strong);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        0 0 0 1px var(--border-strong),
-        0 0 60px -20px var(--accent-glow);
-    }
-
-    .portfolio-card:hover::before { opacity: 1; }
-
-    .portfolio-image {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-bottom: 1px solid var(--border);
-      transition: transform 0.4s ease;
-    }
-
-    .portfolio-card:hover .portfolio-image { transform: scale(1.02); }
-
-    .portfolio-content {
-      position: relative;
-      padding: 20px;
-      z-index: 1;
-    }
-
-    .portfolio-year {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .portfolio-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-
-    .portfolio-desc {
-      font-size: 0.9rem;
+      border-radius: 100px;
       color: var(--text-muted);
-      line-height: 1.6;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Contact Section */
@@ -432,7 +449,10 @@
       flex-shrink: 0;
     }
 
-    .contact-icon svg { width: 24px; height: 24px; }
+    .contact-icon svg {
+      width: 24px;
+      height: 24px;
+    }
 
     .contact-info h3 {
       font-size: 1rem;
@@ -462,7 +482,9 @@
       transition: transform 0.3s ease;
     }
 
-    .lamp:hover { transform: scale(1.1); }
+    .lamp:hover {
+      transform: scale(1.1);
+    }
 
     .lamp svg {
       width: 40px;
@@ -477,7 +499,6 @@
       filter: drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 20px var(--accent-glow));
     }
 
-    /* Switch */
     .switch-container {
       position: fixed;
       bottom: 30px;
@@ -490,7 +511,6 @@
       gap: 10px;
     }
 
-    /* NEW: Switch Label */
     .switch-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
@@ -501,10 +521,10 @@
       opacity: 0.7;
       transition: opacity 0.3s;
     }
-    
+
     .switch-container:hover .switch-label {
-        opacity: 1;
-        color: var(--accent);
+      opacity: 1;
+      color: var(--accent);
     }
 
     .switch {
@@ -532,11 +552,22 @@
     }
 
     @keyframes switchPulse {
-      0%, 100% { opacity: 0; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.02); }
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+      }
     }
 
-    .switch:hover::before { opacity: 1; }
+    .switch:hover::before {
+      opacity: 1;
+    }
 
     .knob {
       position: absolute;
@@ -578,7 +609,10 @@
 
     /* Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -587,18 +621,53 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      header { height: 60px; padding: 0 16px; }
-      nav.tabs { gap: 6px; }
-      nav.tabs button { padding: 8px 14px; font-size: 0.85rem; }
-      main { padding-top: 80px; }
-      .content-section { padding: 24px 16px; }
-      .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
-      .lamp { top: 75px; right: 16px; }
-      .switch-container { bottom: 20px; }
-      .contact-grid { grid-template-columns: 1fr; }
-      
+      header {
+        height: 60px;
+        padding: 0 16px;
+      }
+
+      nav.tabs {
+        gap: 6px;
+      }
+
+      nav.tabs button {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+
+      main {
+        padding-top: 80px;
+      }
+
+      .content-section {
+        padding: 24px 16px;
+      }
+
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      /* Stack projects on mobile */
+      .project-year {
+        margin-bottom: 8px;
+      }
+
+      .lamp {
+        top: 75px;
+        right: 16px;
+      }
+
+      .switch-container {
+        bottom: 20px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
       .standby-prompt {
-          width: 90%;
+        width: 90%;
       }
     }
   </style>
@@ -609,20 +678,21 @@
   <div class="grid-pattern" aria-hidden="true"></div>
   <div class="ambient-light" id="ambient-light" aria-hidden="true"></div>
 
-  <!-- NEW: Standby Prompt -->
+  <!-- Standby Prompt -->
   <div class="standby-prompt" id="standby-prompt">
     <div class="prompt-icon">
-        <!-- Power Icon SVG -->
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>
-        </svg>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
+        <line x1="12" y1="2" x2="12" y2="12" />
+      </svg>
     </div>
     <div class="prompt-text">System Standby</div>
     <div class="prompt-instruction">Flip the switch below to power on</div>
   </div>
 
   <header>
-    <div class="logo"><span>[</span> Fandy  <span>]</span></div>
+    <div class="logo"><span>[</span> Fandy <span>]</span></div>
     <nav class="tabs" role="tablist" aria-label="Main navigation">
       <button class="active" data-tab="home" role="tab" aria-selected="true" aria-controls="tab-home">Home</button>
       <button data-tab="portfolio" role="tab" aria-selected="false" aria-controls="tab-portfolio">Portfolio</button>
@@ -631,7 +701,8 @@
   </header>
 
   <div class="lamp" id="lamp" role="button" tabindex="0" aria-label="Toggle light" aria-pressed="false">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
       <path d="M9 18h6" />
       <path d="M10 22h4" />
       <path d="M12 2a7 7 0 0 0-7 7c0 3.54 2.61 6.47 6 6.92V18h2v-2.08c3.39-.45 6-3.38 6-6.92a7 7 0 0 0-7-7z" />
@@ -654,14 +725,18 @@
         </div>
         <h1 class="profile-name stagger-item">Fandy Sondok</h1>
         <div class="profile-role stagger-item">Embedded Software & IoT Engineer</div>
-        
+
         <div class="about-section stagger-item">
           <h3>About Me</h3>
           <p>
-            I am a passionate Embedded and IoT Engineer with a deep enthusiasm for solving complex problems and designing innovative systems. My love for this field drives me to create comprehensive IoT and embedded solutions from start to finish — from schematic design and PCB layout, through coding and developing user-friendly GUI interfaces, to data transmission, backend development, and creating insightful dashboards.
+            I am a passionate Embedded and IoT Engineer with a deep enthusiasm for solving complex problems and
+            designing innovative systems. My love for this field drives me to create comprehensive IoT and embedded
+            solutions from start to finish — from schematic design and PCB layout, through coding and developing
+            user-friendly GUI interfaces, to data transmission, backend development, and creating insightful dashboards.
           </p>
           <p style="margin-top: 16px;">
-            With extensive experience in every stage of the IoT system lifecycle, I enjoy turning ideas into functional, efficient, and scalable products that truly make an impact.
+            With extensive experience in every stage of the IoT system lifecycle, I enjoy turning ideas into functional,
+            efficient, and scalable products that truly make an impact.
           </p>
         </div>
       </div>
@@ -672,7 +747,8 @@
       <div class="section-header">
         <h2>Portfolio</h2>
       </div>
-      <div class="portfolio-grid" id="portfolio-grid"></div>
+      <!-- This will now render the business list -->
+      <div class="project-list" id="portfolio-list"></div>
     </section>
 
     <!-- Contact Section -->
@@ -685,20 +761,94 @@
   </main>
 
   <script>
-    // Portfolio Data
+    // --- DATA ---
+
+    // Portfolio Data - Business Focused
     const portfolioData = [
-      { image: 'img/fc.png', year: '2025', title: 'Fast Charging Station', desc: 'Designed hardware and PCB, developed firmware with FUOTA capability, server backend, database, dashboard, and Linux GUI display.' },
-      { image: 'img/light.jpeg', year: '2025', title: 'Light Intensity Monitoring', desc: 'Developed IoT weather station focused on measuring and monitoring light intensity in Blora.' },
-      { image: 'img/windspeed-good.png', year: '2025', title: 'Wind Speed Monitoring', desc: 'Implemented wind speed measurement and data acquisition for Blora weather station.' },
-      { image: 'img/temp-current.jpeg', year: '2025', title: 'Temperature and PV Current Monitoring', desc: 'Designed system to monitor temperature and photovoltaic (PV) current parameters.' },
-      { image: 'img/amer.jpeg', year: '2025', title: 'Automatic Meter Reading Device', desc: 'Created software solution for automatic meter reading to improve data collection accuracy.' },
-      { image: 'img/ups.jpeg', year: '2024', title: 'UPS Monitoring System', desc: 'Complete solution including hardware design, firmware, backend, dashboard, and database management.' },
-      { image: 'img/lidar.jpeg', year: '2023', title: 'Vehicle Dimension Measurement', desc: 'Linux library in C to implement vehicle dimension measurement on toll roads using LiDAR.' },
-      { image: 'img/pos.jpeg', year: '2022', title: 'GUI Parking Payment Station', desc: 'Developed a GUI for parking exit systems allowing multi-category lane access control.' },
-      { image: 'img/park.jpeg', year: '2022', title: 'Manless Parking System', desc: 'Integrated barrier control, AI-based license plate recognition, e-money payment, and real-time data transmission.' },
-      { image: 'img/chicken-coop.png', year: '2022', title: 'IoT Chicken Coop Monitoring', desc: 'Prototype IoT monitoring system for chicken coops to optimize poultry farming.' },
-      { image: 'img/lora.jpeg', year: '2021', title: 'LoRaWAN Sanitation System', desc: 'Sanitation system for pump control in a Cikarang factory, based on LoRaWAN Class C.' },
-      { image: 'project2.jpg', year: '2021', title: 'Palm Oil Transport Tracking', desc: 'Tracking system for palm oil transport trucks in rural areas to optimize logistics.' }
+      {
+        year: '2025',
+        title: 'Enterprise EV Fast-Charging Ecosystem',
+        desc: 'Architected end-to-end hardware and firmware with FUOTA (Firmware Over-The-Air) capabilities. Engineered a seamless integration between Linux-based GUIs and secure backend databases, successfully reducing onsite maintenance overhead through advanced remote diagnostics.',
+        tags: ['Embedded Systems', 'FUOTA', 'Linux GUI', 'Cloud Integration']
+      },
+      {
+        year: '2025',
+        title: 'Industrial IoT Environmental Telemetry',
+        desc: 'Deployed high-precision IoT sensing nodes for atmospheric monitoring (wind speed and light intensity). Provided stakeholders with high-fidelity data acquisition systems to drive localized environmental impact analysis and research.',
+        tags: ['IIoT', 'Sensors', 'Data Acquisition', 'Precision Engineering']
+      },
+      {
+        year: '2025',
+        title: 'Smart Grid Automated Meter Reading (AMR)',
+        desc: 'Developed a comprehensive energy management solution, from custom gateway hardware to centralized database clusters. Optimized utility monitoring by providing real-time energy consumption analytics via a high-performance dashboard.',
+        tags: ['Smart Grid', 'Automation', 'Full-stack IoT', 'Energy Management']
+      },
+      {
+        year: '2024',
+        title: 'Mission-Critical UPS Health Intelligence',
+        desc: 'Engineered a holistic hardware/software suite for real-time UPS diagnostics. Implemented proactive alert protocols to mitigate the risk of catastrophic power failures in sensitive infrastructure.',
+        tags: ['Critical Infrastructure', 'Predictive Maintenance', 'Real-time Systems']
+      },
+      {
+        year: '2023',
+        title: 'LiDAR-Based Intelligent Transport System (ITS)',
+        desc: 'Developed a high-performance Linux C library for toll road automation. Achieved high-accuracy vehicle dimensioning and automated classification using LiDAR telemetry to streamline traffic operations.',
+        tags: ['LiDAR', 'Linux C/C++', 'Intelligent Transport', 'Edge Computing']
+      },
+      {
+        year: '2022',
+        title: 'AI-Powered "Manless" Parking Ecosystem',
+        desc: 'Spearheaded a turnkey parking solution integrating AI-driven License Plate Recognition (LPR), multi-lane barrier control, and cashless e-money payments. Significantly reduced operational costs by automating entry/exit workflows.',
+        tags: ['AI/ML', 'Computer Vision', 'Fintech', 'System Integration']
+      },
+      {
+        year: '2022',
+        title: 'Automated Poultry Climate Control',
+        desc: 'Designed an IoT-enabled environmental monitoring prototype for smart farming. Optimized livestock living conditions through automated climate control, resulting in improved yield and operational efficiency.',
+        tags: ['Smart Farming', 'IoT Prototype', 'Climate Automation']
+      },
+      {
+        year: '2021',
+        title: 'Autonomous Weather Station for AI Training',
+        desc: 'Engineered self-powered, off-grid weather stations for Decatab (Singapore). Facilitated the collection of high-density atmospheric datasets to power advanced AI-driven weather prediction models.',
+        tags: ['Solar Powered', 'Big Data', 'AI Dataset', 'Remote Telemetry']
+      },
+      {
+        year: '2021',
+        title: 'LoRaWAN Industrial Automation Network',
+        desc: 'Implemented a robust LoRaWAN Class C network for industrial pump control. Enabled long-range wireless command execution, eliminating the need for expensive cabling in large-scale factory environments.',
+        tags: ['LoRaWAN', 'Industrial IoT', 'Wireless Control']
+      },
+      {
+        year: '2021',
+        title: 'Logistics Fleet Tracking & Compliance',
+        desc: 'Developed specialized GPS tracking hardware for palm oil logistics. Enhanced supply chain transparency by monitoring fleet routes and driver performance in real-time.',
+        tags: ['Asset Tracking', 'Fleet Management', 'GPS/GSM']
+      },
+      {
+        year: '2020-2021',
+        title: 'Precision Hydrological Early Warning System',
+        desc: 'Developed a water-level monitoring suite for peatlands and coastal areas. Provided critical data for disaster mitigation, irrigation management, and ecological conservation.',
+        tags: ['Disaster Mitigation', 'Hydrology', 'Environmental Monitoring']
+      },
+      {
+        year: '2020-2021',
+        title: 'Enterprise Automatic Weather Station (AWS)',
+        desc: 'Engineered an industrial-grade AWS to assist agricultural firms in data-driven planning. Provided real-time meteorological insights that enabled proactive risk management and cost optimization.',
+        tags: ['Agri-Tech', 'Data Analytics', 'Meteorology']
+      },
+      {
+        year: '2018',
+        title: 'Radon Precursor Gateway for Seismic Research',
+        desc: 'Developed a specialized IoT gateway to digitize local radon sensors. Accelerated earthquake research by enabling real-time cloud access to seismic precursor data.',
+        tags: ['Seismology', 'Research Support', 'Data Gateway']
+      },
+      {
+        year: '2018',
+        title: 'IoT Livestock Asset Management for Fintech',
+        desc: 'Created a real-time livestock monitoring platform for an investment startup. Enhanced investor trust by providing live visibility into asset growth and health metrics via a mobile interface.',
+        tags: ['Agri-Fintech', 'Asset Monitoring', 'Live Telemetry']
+      }
     ];
 
     // Contact Data
@@ -708,17 +858,22 @@
       { label: 'Email', value: 'fandysondok@gmail.com', url: 'mailto:fandysondok@gmail.com', icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00d4aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>' }
     ];
 
-    // Render Functions
+    // --- RENDER FUNCTIONS ---
+
     function renderPortfolio() {
-      const grid = document.getElementById('portfolio-grid');
-      if(!grid) return;
-      grid.innerHTML = portfolioData.map((item, index) => `
-        <article class="portfolio-card stagger-item" style="transition-delay: ${index * 0.08}s">
-          <img src="${item.image}" alt="${item.title}" class="portfolio-image" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 200%22><rect fill=%22%230a1628%22 width=%22400%22 height=%22200%22/><text fill=%22%237a9bb0%22 x=%22200%22 y=%22105%22 text-anchor=%22middle%22 font-family=%22sans-serif%22>No Image</text></svg>'"/>
-          <div class="portfolio-content">
-            <div class="portfolio-year">${item.year}</div>
-            <h3 class="portfolio-title">${item.title}</h3>
-            <p class="portfolio-desc">${item.desc}</p>
+      const list = document.getElementById('portfolio-list');
+      if (!list) return;
+
+      // Generate List Items instead of Grid Cards
+      list.innerHTML = portfolioData.map((item, index) => `
+        <article class="project-item stagger-item" style="transition-delay: ${index * 0.08}s">
+          <div class="project-year">${item.year}</div>
+          <div class="project-content">
+            <h3>${item.title}</h3>
+            <p class="project-desc">${item.desc}</p>
+            <div class="tags">
+              ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
           </div>
         </article>
       `).join('');
@@ -726,7 +881,7 @@
 
     function renderContact() {
       const grid = document.getElementById('contact-grid');
-      if(!grid) return;
+      if (!grid) return;
       grid.innerHTML = contactData.map((item, index) => `
         <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="contact-card stagger-item" style="transition-delay: ${index * 0.1}s" aria-label="${item.label}">
           <div class="contact-icon">${item.icon}</div>
@@ -741,10 +896,9 @@
     renderPortfolio();
     renderContact();
 
-    // State
-    let isLampOn = false;
+    // --- STATE & LOGIC ---
 
-    // DOM Elements
+    let isLampOn = false;
     const lamp = document.getElementById('lamp');
     const switchEl = document.getElementById('switch');
     const ambientLight = document.getElementById('ambient-light');
@@ -752,24 +906,18 @@
     const tabButtons = document.querySelectorAll('nav.tabs button');
     const contentSections = document.querySelectorAll('.content-section');
 
-    // Toggle Function
     function toggleLamp() {
       isLampOn = !isLampOn;
-      
+
       lamp.classList.toggle('on', isLampOn);
       lamp.setAttribute('aria-pressed', isLampOn);
       switchEl.classList.toggle('on', isLampOn);
       switchEl.setAttribute('aria-checked', isLampOn);
       ambientLight.classList.toggle('active', isLampOn);
 
-      // Hide/Show the standby prompt
-      if (standbyPrompt) {
-          standbyPrompt.classList.toggle('hidden', isLampOn);
-      }
+      if (standbyPrompt) standbyPrompt.classList.toggle('hidden', isLampOn);
 
-      if (isLampOn) {
-        createSignalAnimation();
-      }
+      if (isLampOn) createSignalAnimation();
 
       contentSections.forEach(section => {
         if (section.classList.contains('active')) {
@@ -783,7 +931,6 @@
       });
     }
 
-    // Signal Animation
     function createSignalAnimation() {
       const switchRect = switchEl.getBoundingClientRect();
       const lampRect = lamp.getBoundingClientRect();
@@ -797,26 +944,16 @@
           const particle = document.createElement('div');
           particle.className = 'signal-particle';
           document.body.appendChild(particle);
-
           const size = Math.max(4, 10 - i);
-          particle.style.cssText = `
-            left: ${startX}px; top: ${startY}px;
-            width: ${size}px; height: ${size}px;
-            background: rgba(0, 212, 170, ${0.8 - i * 0.1});
-            box-shadow: 0 0 10px rgba(0, 212, 170, 0.8);
-          `;
-
+          particle.style.cssText = `left: ${startX}px; top: ${startY}px; width: ${size}px; height: ${size}px; background: rgba(0, 212, 170, ${0.8 - i * 0.1}); box-shadow: 0 0 10px rgba(0, 212, 170, 0.8);`;
           const duration = 600 + i * 50;
           const startTime = performance.now();
-
           function animateSignal(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
-            
             particle.style.left = (startX + (endX - startX) * eased) + 'px';
             particle.style.top = (startY + (endY - startY) * eased) + 'px';
-
             if (progress < 1) requestAnimationFrame(animateSignal);
             else particle.remove();
           }
@@ -832,10 +969,8 @@
       });
     }
 
-    // Event Listeners
     switchEl.addEventListener('click', toggleLamp);
     lamp.addEventListener('click', toggleLamp);
-
     switchEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleLamp(); } });
     lamp.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleLamp(); } });
 
@@ -869,76 +1004,47 @@
     let particles = [];
     let mouseX = 0, mouseY = 0;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-      initParticles();
-    }
-
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); }
     function initParticles() {
       particles = [];
       const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
       for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-          radius: Math.random() * 2 + 1, brightness: Math.random() * 0.5 + 0.3
-        });
+        particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, radius: Math.random() * 2 + 1, brightness: Math.random() * 0.5 + 0.3 });
       }
     }
-
     function drawParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            ctx.strokeStyle = `rgba(0, 212, 170, ${(1 - dist / 150) * 0.15})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
-          }
+          const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) { ctx.strokeStyle = `rgba(0, 212, 170, ${(1 - dist / 150) * 0.15})`; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
         }
       }
       particles.forEach(p => {
         const distToMouse = Math.sqrt(Math.pow(p.x - mouseX, 2) + Math.pow(p.y - mouseY, 2));
         const glowRadius = Math.max(0.1, p.radius + (distToMouse < 150 ? (1 - distToMouse / 150) * 4 : 0));
         const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, Math.max(0.1, glowRadius * 3));
-        gradient.addColorStop(0, `rgba(0, 212, 170, ${p.brightness})`);
-        gradient.addColorStop(1, 'rgba(0, 212, 170, 0)');
-        ctx.fillStyle = gradient;
-        ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, glowRadius * 3), 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = `rgba(0, 212, 170, ${p.brightness + 0.3})`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, p.radius), 0, Math.PI * 2); ctx.fill();
+        gradient.addColorStop(0, `rgba(0, 212, 170, ${p.brightness})`); gradient.addColorStop(1, 'rgba(0, 212, 170, 0)');
+        ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, glowRadius * 3), 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(0, 212, 170, ${p.brightness + 0.3})`; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, p.radius), 0, Math.PI * 2); ctx.fill();
       });
     }
-
     function updateParticles() {
       particles.forEach(p => {
         p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        p.x = Math.max(0, Math.min(canvas.width, p.x));
-        p.y = Math.max(0, Math.min(canvas.height, p.y));
-        const dx = mouseX - p.x;
-        const dy = mouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100 && dist > 0) {
-          const force = (100 - dist) / 100 * 0.02;
-          p.vx -= (dx / dist) * force;
-          p.vy -= (dy / dist) * force;
-        }
-        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (speed > 1) { p.vx = (p.vx / speed) * 1; p.vy = (p.vy / speed) * 1; }
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        p.x = Math.max(0, Math.min(canvas.width, p.x)); p.y = Math.max(0, Math.min(canvas.height, p.y));
+        const dx = mouseX - p.x; const dy = mouseY - p.y; const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100 && dist > 0) { const force = (100 - dist) / 100 * 0.02; p.vx -= (dx / dist) * force; p.vy -= (dy / dist) * force; }
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy); if (speed > 1) { p.vx = (p.vx / speed) * 1; p.vy = (p.vy / speed) * 1; }
       });
     }
-
     function animate() { updateParticles(); drawParticles(); requestAnimationFrame(animate); }
-
     document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     animate();
   </script>
 </body>
+
 </html>
